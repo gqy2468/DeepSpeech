@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Only 1 parameter !
-if [ $# != 1 ];then
-	echo " Usage: .\check-thchs30.sh filename!";
+# Only 1 or 2 parameter !
+if [ $# != 1 -a $# != 2 ];then
+    echo " Usage: sh check-thchs30.sh csvfile [iscopy]!";
     exit
 fi
 
@@ -23,15 +23,22 @@ IFS="
 "
 
 # i is the line number
+if [ "$2" = "Y" ];then
+    mkdir "/tmp/copy"
+fi
 i=1
 for line in `cat $1`
 do
     #echo line $i:
-    fname=$(echo $line | awk -F"," '{print $1}')
+    fpath=$(echo $line | awk -F"," '{print $1}')
     fsize=$(echo $line | awk -F"," '{print $2}')
-    fsize2=$(ls -l $fname | awk '{print $5}')
+    fsize2=$(ls -l $fpath | awk '{print $5}')
+    fname=${fpath##*/}
     if [ "$fsize" != "$fsize2" ];then
         echo line $i:$fsize"[ != ]"$fsize2
+    fi
+    if [ "$2" = "Y" ];then
+	ffmpeg -i "$fpath" -c:a copy "/tmp/copy/$fname"
     fi
     i=`expr $i + 1`
 done
