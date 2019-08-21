@@ -17,7 +17,7 @@ DEV_CSV="$DATA_DIR/$prefix-dev.csv"
 TEST_CSV="$DATA_DIR/$prefix-test.csv"
 COMPUTE_KEEP_DIR="/home/guoqiya/Documents/DeepSpeech/thchs30-models"
  
-BATCH_SIZE=3000
+BATCH_SIZE=3
  
 # check directory if exist
 #declare -a files=(
